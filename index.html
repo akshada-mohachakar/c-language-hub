@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>C Language Hub</title>
+    <link rel="stylesheet" href="home1.css" />
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header id="hero">
+      <nav id="header">
+        <div class="animated-text">
+          <span>C</span>
+          <span>Language</span>
+          <span>Hub</span>
+        </div>
+        <div id="nav-links">
+          <a href="#home">Home</a>
+          <a href="#quiz">Quizzes</a>
+          <a href="#programs">Programs</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <button id="menu-toggle" aria-label="Toggle Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+
+      <!-- Hero Text -->
+      <div class="hero-text">
+        <h1>Welcome to C Language Hub</h1>
+        <p>Master the art of programming with our curated resources.</p>
+        <a href="nav.html" class="box">Start Quiz</a>
+      </div>
+    </header>
+
+    <!-- Quiz Section -->
+    <section id="quiz">
+      <h2>c mastery test</h2>
+      <p>Choose your level:</p>
+      <div class="quiz-levels">
+        <button onclick="startQuiz('beginning')">Beginner</button>
+        <button onclick="startQuiz('intermediate')">Intermediate</button>
+        <button onclick="startQuiz('advanced')">Advanced</button>
+      </div>
+      <div id="quiz-container" class="hidden">
+        <h3 id="quiz-question"></h3>
+        <div id="quiz-options"></div>
+        <button id="next-btn" onclick="nextQuestion()">full scope test</button>
+        <p id="result" class="hidden"></p>
+      </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs">
+      <h2>C Programs</h2>
+      <div id="program-list">
+        <div class="program">
+          <h3>1. Hello World</h3>
+          <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    printf("Hello, World!");
+    return 0;
+}
+          </pre>
+        </div>
+        <div class="program">
+          <h3>2. Fibonacci Series</h3>
+          <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    int n1 = 0, n2 = 1, n3, i, num = 10;
+    printf("%d %d ", n1, n2);
+    for (i = 2; i < num; ++i) {
+        n3 = n1 + n2;
+        printf("%d ", n3);
+        n1 = n2;
+        n2 = n3;
+    }
+    return 0;
+}
+          </pre>
+        </div>
+        <div id="more">
+          <a href="try-code.html" class="cta">More...</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer id="contact">
+      <p>
+        Contact us: <a href="mailto:info@clanghub.com">info@clanghub.com</a>
+      </p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      function toggleMenu() {
+        const nav = document.getElementById("nav-links");
+        nav.classList.toggle("nav-active");
+      }
+
+      // Hamburger menu toggle
+      const menuToggle = document.getElementById("menu-toggle");
+      const navLinks = document.getElementById("nav-links");
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("nav-active");
+      });
+    </script>
+  </body>
+</html>

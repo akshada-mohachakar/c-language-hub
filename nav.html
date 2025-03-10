@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>C Programming Quiz</title>
+    <style>
+      /* General Styling */
+      body {
+        margin: 0;
+        font-family: "Poppins", Arial, sans-serif;
+        background-color: #121212;
+        color: #ffffff;
+        line-height: 1.6;
+        transition: all 0.3s ease;
+      }
+
+      #header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: rgba(18, 18, 18, 0.95);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+      }
+
+      .animated-text {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #bb86fc;
+        display: flex;
+        gap: 8px;
+        overflow: hidden; /* Ensures text doesn't overflow during animation */
+      }
+      .animated-text span {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(100%);
+        animation: slideUp 0.8s ease-out forwards;
+      }
+
+      .animated-text span:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+
+      .animated-text span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .animated-text span:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+
+      @keyframes slideUp {
+        0% {
+          transform: translateY(100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      #nav-links {
+        display: flex;
+        gap: 20px;
+        transition: transform 0.3s ease;
+      }
+
+      #nav-links a {
+        color: #bb86fc;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 10px 15px;
+        border-radius: 6px;
+        transition: color 0.3s ease, background-color 0.3s ease;
+      }
+
+      #nav-links a:hover {
+        background-color: #8146ca;
+        color: #ffffff;
+      }
+
+      /* Hamburger Menu */
+      #menu-toggle {
+        display: none;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 24px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      #menu-toggle span {
+        width: 100%;
+        height: 3px;
+        background-color: #bb86fc;
+        transition: all 0.3s ease;
+      }
+
+      #menu-toggle:hover span {
+        background-color: #ffffff;
+      }
+
+      /* Quiz Container */
+      .container {
+        max-width: 600px;
+        margin: 100px auto 30px; /* Adjusted margin to account for fixed header */
+        background: #222;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+      }
+
+      .btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #00d1b2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .btn:hover {
+        background-color: #008f89;
+      }
+
+      .options li {
+        padding: 10px;
+        background: #333;
+        border-radius: 5px;
+        margin: 5px 0;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .options li:hover {
+        background: #444;
+      }
+
+      .quiz-section,
+      .result-section {
+        display: none;
+      }
+
+      .timer {
+        text-align: right;
+        font-size: 1.2rem;
+        color: #ff4757;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #1e1e1e;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        #header {
+          padding: 10px 20px;
+        }
+
+        #nav-links {
+          position: absolute;
+          top: 70px;
+          right: 0;
+          flex-direction: column;
+          background-color: rgba(18, 18, 18, 0.95);
+          width: 100%;
+          text-align: center;
+          transform: translateX(100%);
+          transition: transform 0.3s ease;
+        }
+
+        #nav-links.nav-active {
+          transform: translateX(0);
+        }
+
+        #nav-links a {
+          padding: 15px;
+          border-bottom: 1px solid #333;
+        }
+
+        #menu-toggle {
+          display: flex;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <header>
+      <nav id="header">
+        <div class="animated-text">
+          <span>C</span>
+          <span>Language</span>
+          <span>Hub</span>
+        </div>
+        <div id="nav-links">
+          <a href="#home">Home</a>
+          <a href="#quiz">Quizzes</a>
+          <a href="#programs">Programs</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <button id="menu-toggle" aria-label="Toggle Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Quiz Container -->
+    <div class="container">
+      <!-- Quiz Menu -->
+      <div id="quiz-menu">
+        <h2>Select a C Test</h2>
+        <button class="btn" onclick="startQuiz('basics')">C Basics</button>
+        <button class="btn" onclick="startQuiz('pointers')">C Pointers</button>
+        <button class="btn" onclick="startQuiz('functions')">
+          C Functions
+        </button>
+        <button class="btn" onclick="startQuiz('arrays')">C Arrays</button>
+        <button class="btn" onclick="startQuiz('strings')">C Strings</button>
+        <button class="btn" onclick="startQuiz('structures')">
+          C Structures
+        </button>
+      </div>
+
+      <!-- Quiz Section -->
+      <div id="quiz-section" class="quiz-section">
+        <div class="timer">Time Left: <span id="time-left">30</span>s</div>
+        <h2 id="question-text"></h2>
+        <ul class="options" id="options-list"></ul>
+      </div>
+
+      <!-- Result Section -->
+      <div id="result-section" class="result-section">
+        <h2>Quiz Completed!</h2>
+        <p>Your Score: <span id="final-score"></span></p>
+        <p>Your Level: <span id="intelligence-level"></span></p>
+        <button class="btn" onclick="restartQuiz()">Restart</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">&copy; 2025 C Lab Tutorials</div>
+
+    <script>
+      const quizzes = {
+        basics: [
+          {
+            question: "What is the size of int in C?",
+            options: ["2 bytes", "4 bytes", "8 bytes", "1 byte"],
+            answer: "4 bytes",
+          },
+          {
+            question: "What is the correct format specifier for int?",
+            options: ["%d", "%f", "%c", "%s"],
+            answer: "%d",
+          },
+          {
+            question: "What is the correct format specifier for float?",
+            options: ["%d", "%f", "%c", "%s"],
+            answer: "%f",
+          },
+          {
+            question: "What is the size of int?",
+            options: [
+              "2 bytes",
+              "4 bytes",
+              "depends on machine to machine",
+              "8 bytes",
+            ],
+            answer: "depends on machine to machine",
+          },
+          {
+            question:
+              "What is the output of the following code: #include<stdio.h> int main() { printf('%d',printf('hello')); } ",
+            options: ["hello", "hello5", "5", "4"],
+            answer: "hello5",
+          },
+          {
+            question:
+              "What is the output of the following code: #include<stdio.h> int main() { int a=1;  printf('%d',a+=(a+=3,5,a)); } ",
+            options: ["1", "2", "5", "4"],
+            answer: "2",
+          },
+          {
+            question:
+              "What is the output of the following code: #include<stdio.h> int main() { int x=10,y=20;  x+=(y+=10); printf('%d%d',x,y); } ",
+            options: ["x=30,y=20", "x=40,y=30", "x=21,y=11", "x=12,y=11"],
+            answer: "x=40,y=30",
+          },
+          {
+            question:
+              "What is the output of the following code: #include<stdio.h> int main() { int a[5]={5,1,15,20,25}; int i,j,k; i= ++a[1]; j =a[1]++; k=a[i++];  printf('%d %d %d',i,j,k); } ",
+            options: ["2 3 1", "3 2 15", "2 2 15", "6 5 25"],
+            answer: "3 2 15",
+          },
+        ],
+        pointers: [
+          {
+            question: "What does a pointer store?",
+            options: ["Address", "Value", "Reference", "None"],
+            answer: "Address",
+          },
+          {
+            question: "Which operator is used for dereferencing?",
+            options: ["*", "&", "%", "#"],
+            answer: "*",
+          },
+        ],
+        functions: [
+          {
+            question: "Which keyword is used for function declaration?",
+            options: ["declare", "define", "function", "None"],
+            answer: "None",
+          },
+          {
+            question: "Which function is used to take input?",
+            options: ["scanf", "print", "input", "read"],
+            answer: "scanf",
+          },
+        ],
+        arrays: [
+          {
+            question: "What is the index of the first element in an array?",
+            options: ["0", "1", "-1", "None"],
+            answer: "0",
+          },
+          {
+            question: "How do you declare an array of 5 integers?",
+            options: [
+              "int arr[5];",
+              "int arr = {5};",
+              "array arr[5];",
+              "int arr(5);",
+            ],
+            answer: "int arr[5];",
+          },
+        ],
+        strings: [
+          {
+            question: "Which function is used to copy strings?",
+            options: ["strcpy", "strcat", "strlen", "strcmp"],
+            answer: "strcpy",
+          },
+          {
+            question: "What is the null character in C?",
+            options: ["\\0", "\\n", "\\t", "\\r"],
+            answer: "\\0",
+          },
+        ],
+        structures: [
+          {
+            question: "What is a structure in C?",
+            options: [
+              "A collection of variables",
+              "A function",
+              "A loop",
+              "A pointer",
+            ],
+            answer: "A collection of variables",
+          },
+          {
+            question: "How do you access a structure member?",
+            options: [".", "->", "::", ":"],
+            answer: ".",
+          },
+        ],
+      };
+
+      let currentQuiz = [];
+      let currentQuestionIndex = 0;
+      let score = 0;
+      let timer;
+
+      function startQuiz(topic) {
+        document.getElementById("quiz-menu").style.display = "none";
+        document.getElementById("quiz-section").style.display = "block";
+        currentQuiz = quizzes[topic];
+        currentQuestionIndex = 0;
+        score = 0;
+        startTimer();
+        showQuestion();
+      }
+
+      function startTimer() {
+        let timeLeft = 30;
+        document.getElementById("time-left").textContent = timeLeft;
+        timer = setInterval(() => {
+          timeLeft--;
+          document.getElementById("time-left").textContent = timeLeft;
+          if (timeLeft <= 0) {
+            clearInterval(timer);
+            nextQuestion();
+          }
+        }, 1000);
+      }
+
+      function showQuestion() {
+        clearInterval(timer);
+        startTimer();
+        let currentQuestion = currentQuiz[currentQuestionIndex];
+        document.getElementById("question-text").textContent =
+          currentQuestion.question;
+        let optionsList = document.getElementById("options-list");
+        optionsList.innerHTML = "";
+        currentQuestion.options.forEach((option) => {
+          let li = document.createElement("li");
+          li.textContent = option;
+          li.onclick = () => checkAnswer(option);
+          optionsList.appendChild(li);
+        });
+      }
+
+      function checkAnswer(selectedOption) {
+        if (selectedOption === currentQuiz[currentQuestionIndex].answer) {
+          score++;
+        }
+        nextQuestion();
+      }
+
+      function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < currentQuiz.length) {
+          showQuestion();
+        } else {
+          showResults();
+        }
+      }
+
+      function showResults() {
+        clearInterval(timer);
+        document.getElementById("quiz-section").style.display = "none";
+        document.getElementById("result-section").style.display = "block";
+        document.getElementById(
+          "final-score"
+        ).textContent = `${score} / ${currentQuiz.length}`;
+
+        // Determine intelligence level
+        let level;
+        if (score === currentQuiz.length) {
+          level = "Expert";
+        } else if (score >= currentQuiz.length / 2) {
+          level = "Intermediate";
+        } else {
+          level = "Beginner";
+        }
+        document.getElementById("intelligence-level").textContent = level;
+      }
+
+      function restartQuiz() {
+        document.getElementById("result-section").style.display = "none";
+        document.getElementById("quiz-menu").style.display = "block";
+      }
+
+      // Hamburger menu toggle
+      const menuToggle = document.getElementById("menu-toggle");
+      const navLinks = document.getElementById("nav-links");
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("nav-active");
+      });
+    </script>
+  </body>
+</html>
